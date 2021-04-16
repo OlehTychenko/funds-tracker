@@ -3,19 +3,15 @@ import { List as MUIList, ListItem, ListItemAvatar, ListItemText, Avatar, ListIt
 import { Delete, MoneyOff } from '@material-ui/icons'
 
 import useStyles from './styles'
+import { removeItem } from '../../../redux'
+import { connect } from 'react-redux'
 
-const List = () => {
+const List = ({list, removeItem}) => {
     const classes = useStyles()
-
-    const transactions = [
-        { id: 1, type: 'Income', category: 'Salary', amount: 50, date: 'Fri Apr 16' },
-        { id: 2, type: 'Expense', category: 'Pets', amount: 30, date: 'Fri Apr 22' },
-        { id: 3, type: 'Income', category: 'Business', amount: 150, date: 'Fri Apr 09' }
-    ];
 
     return (
         <MUIList dense={false} className={classes.list}>
-            {transactions.map(transaction => (
+            {list.map(transaction => (
                 <Slide direction='down' in mountOnEnter unmountOnExit key={transaction.id}>
                     <ListItem>
                         <ListItemAvatar>
@@ -25,7 +21,7 @@ const List = () => {
                         </ListItemAvatar>
                         <ListItemText primary={transaction.category} secondary={`${transaction.amount} - ${transaction.date}`} />
                         <ListItemSecondaryAction>
-                            <IconButton edge='end' aria-label='delete' onClick={() => console.log(42)}>
+                            <IconButton edge='end' aria-label='delete' onClick={() => removeItem(transaction.id)}>
                                 <Delete />
                             </IconButton>
                         </ListItemSecondaryAction>
@@ -36,4 +32,15 @@ const List = () => {
     )
 }
 
-export default List
+const mapStateToProps = state => ({
+    list: state.list.list
+})
+
+const mapDispatchToProps = dispatch => ({
+    removeItem: id => dispatch(removeItem(id))
+})
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(List)
