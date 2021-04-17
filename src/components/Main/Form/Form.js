@@ -1,10 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { TextField, Typography, Grid, Button, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core'
 
 import useStyles from './styles'
+import { connect } from 'react-redux'
+import { addTransaction } from '../../../redux'
+import { v4 as uuidv4 } from 'uuid';
 
-const Form = () => {
+
+const initialState = {
+    amount: 10,
+    category: '',
+    type: 'Expense',
+    date: new Date(),
+    id: uuidv4()
+}
+
+const Form = ({addTransactionToList}) => {
     const classes = useStyles()
+    const [formData, setFormData] = useState(initialState)
 
     return (
         <Grid
@@ -19,7 +32,10 @@ const Form = () => {
             <Grid item xs={6}>
                 <FormControl fullWidth>
                     <InputLabel>Type</InputLabel>
-                    <Select>
+                    <Select value={formData.type} onChange={e => setFormData({
+                        ...formData,
+                        type: e.target.value
+                    })}>
                         <MenuItem value='Income'>Income</MenuItem>
                         <MenuItem value='Expense'>Expense</MenuItem>
                     </Select>
@@ -28,21 +44,37 @@ const Form = () => {
             <Grid item xs={6}>
                 <FormControl fullWidth>
                     <InputLabel>Category</InputLabel>
-                    <Select>
+                    <Select value={formData.category} onChange={e => setFormData({
+                        ...formData,
+                        category: e.target.value
+                    })}>
                         <MenuItem value='Business'>Business</MenuItem>
                         <MenuItem value='Salary'>Salary</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
             <Grid item xs={6}>
-                <TextField type='number' label='Amount' fullWidth/>
+                <TextField value={formData.amount} onChange={e => setFormData({
+                    ...formData,
+                    amount: +e.target.value
+                })} type='number' label='Amount' fullWidth/>
             </Grid>
             <Grid item xs={6}>
-                <TextField type='date' label='Date' fullWidth/>
+                <TextField value={formData.date} onChange={e => setFormData({
+                    ...formData,
+                    date: e.target.value
+                })} type='date' label='Date' fullWidth/>
             </Grid>
-            <Button className={classes.button} variant='outlined' color='primary' fullWidth>Create</Button>
+            <Button className={classes.button} onClick={() => addTransactionToList(formData)} variant='outlined' color='primary' fullWidth>Create</Button>
         </Grid>
     )
 }
 
-export default Form
+const mapDispatchToProps = dispatch => ({
+    addTransactionToList: trans => dispatch(addTransaction(trans))
+})
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(Form)

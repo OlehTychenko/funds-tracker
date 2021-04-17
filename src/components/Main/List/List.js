@@ -37,7 +37,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    removeItem: id => dispatch(removeItem(id))
+    removeItem: id => dispatch(removeItem(id)),
 })
 
 export default connect(

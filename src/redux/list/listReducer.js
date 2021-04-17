@@ -1,4 +1,4 @@
-import { REMOVE_ITEM } from "./listTypes"
+import { ADD_TRANSACTION, REMOVE_ITEM } from "./listTypes"
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
@@ -13,6 +13,13 @@ const listReducer = (state = initialState, action) => {
     switch (action.type) {
         case REMOVE_ITEM: {
             const list = state.list.filter((item) => action.payload !== item.id)
+            return {
+                ...state,
+                list
+            }
+        }
+        case ADD_TRANSACTION: {
+            const list = [...state.list, action.payload]
             return {
                 ...state,
                 list
