@@ -51,8 +51,6 @@ const Form = ({addTransactionToList}) => {
                         ...formData,
                         category: e.target.value
                     })}>
-                        {/* <MenuItem value='Business'>Business</MenuItem>
-                        <MenuItem value='Salary'>Salary</MenuItem> */}
                         {selectedCategories.map(c => <MenuItem key={c.type} value={c.type}>{c.type}</MenuItem>)}
                     </Select>
                 </FormControl>
