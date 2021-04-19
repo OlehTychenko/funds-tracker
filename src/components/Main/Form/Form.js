@@ -5,6 +5,7 @@ import useStyles from './styles'
 import { connect } from 'react-redux'
 import { addTransaction } from '../../../redux'
 import { v4 as uuidv4 } from 'uuid';
+import { incomeCategories, expenseCategories } from '../../constans/categories'
 
 
 const initialState = {
@@ -18,6 +19,8 @@ const initialState = {
 const Form = ({addTransactionToList}) => {
     const classes = useStyles()
     const [formData, setFormData] = useState(initialState)
+
+    const selectedCategories = formData.type === 'Income' ? incomeCategories : expenseCategories;
 
     return (
         <Grid
@@ -48,8 +51,9 @@ const Form = ({addTransactionToList}) => {
                         ...formData,
                         category: e.target.value
                     })}>
-                        <MenuItem value='Business'>Business</MenuItem>
-                        <MenuItem value='Salary'>Salary</MenuItem>
+                        {/* <MenuItem value='Business'>Business</MenuItem>
+                        <MenuItem value='Salary'>Salary</MenuItem> */}
+                        {selectedCategories.map(c => <MenuItem key={c.type} value={c.type}>{c.type}</MenuItem>)}
                     </Select>
                 </FormControl>
             </Grid>
