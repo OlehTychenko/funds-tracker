@@ -2,7 +2,8 @@ import { ADD_TRANSACTION, REMOVE_ITEM, SORT_TRANSACTIONS } from "./listTypes"
 import { v4 as uuidv4 } from 'uuid';
 import { sortBy } from 'lodash';
 
-const initialState = JSON.parse(localStorage.getItem('transactions'))[0] ? {
+
+const initialState = JSON.parse(localStorage.getItem('transactions')) ? {
     list: JSON.parse(localStorage.getItem('transactions')),
     sort: {
         type: 'amount'
