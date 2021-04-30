@@ -4,28 +4,35 @@ import { Card, CardHeader, CardContent, Typography, Grid, Divider } from '@mater
 import useStyles from './styles'
 import Form from './Form/Form'
 import List from './List/List'
+import { connect } from 'react-redux'
 
-const Main = () => {
+const Main = ({ list }) => {
     const classes = useStyles()
+    const balance = list.reduce((acc, currValue) => {
+        return currValue.type === 'Income' ? acc + currValue.amount : acc - currValue.amount
+    }, 0)
     return (
         <Card className={classes.root}>
             <CardHeader title='Expense tracker' subheader='Powered by ...' />
             <CardContent>
-                <Typography align='center' varian='h5'>Total Balance $100</Typography>
+                <Typography align='center' varian='h5'>Total Balance {balance}</Typography>
                 <Typography variant='subtitle1' style={{ lineHeight: '1.5em', marginTop: '20px' }}>
-                    {/* InfoCard... */}
                     Try saying: Add income for 100$ in Category Salary for Monday ...
                 </Typography>
                 <Divider />
                 <Form />
             </CardContent>
-            <CardContent className={classes.cardContent}>
-                <Grid item xs={12}>
-                    <List />
-                </Grid>
-            </CardContent>
+            {/* <CardContent className={classes.cardContent}>
+                <List />
+            </CardContent> */}
         </Card>
     )
 }
 
-export default Main
+const mapStateToProps = state => ({
+    list: state.list.list
+})
+
+export default connect(
+    mapStateToProps
+)(Main)

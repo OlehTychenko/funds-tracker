@@ -4,32 +4,20 @@ import { Doughnut } from 'react-chartjs-2'
 
 import useStyles from './styles'
 import { connect } from 'react-redux'
+import useTransactions from '../../useTransactions'
 
 const Details = ({ title, list }) => {
     const classes = useStyles();
 
-    const income = list.reduce((sum, current) => {
-        if (current.type === 'Income') {
-            return sum + current.amount
-        } else return sum
-    }, 0)
-
-    const expense = list.reduce((sum, current) => {
-        if (current.type === 'Expense') {
-            return sum + current.amount
-        } else return sum
-    }, 0)
+    const { total, chartData} = useTransactions(list, title)
 
     return (
         <div>
             <Card className={title === 'Income' ? classes.income : classes.expense}>
                 <CardHeader title={title} />
                 <CardContent>
-                    <Typography variant='h5'>{title === 'Income' ?
-                        income
-                        : expense
-                    }</Typography>
-                    {/* <Doughnut data='' /> */}
+                    <Typography variant='h5'>${total}</Typography>
+                    <Doughnut data={chartData} />
                 </CardContent>
             </Card>
         </div>
